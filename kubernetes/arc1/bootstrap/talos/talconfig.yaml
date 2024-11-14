@@ -76,6 +76,7 @@ nodes:
                   - bind
                   - rshared
                   - rw
+      - "@./patches/worker/nvidia.yaml"
     nodeLabels:
       node-role.kubernetes.io/worker: "worker"
       topology.kubernetes.io/region: *region
