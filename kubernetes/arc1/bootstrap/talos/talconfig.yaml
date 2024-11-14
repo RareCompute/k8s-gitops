@@ -1,0 +1,97 @@
+---
+# yaml-language-server: $schema=schemas/talconfig.json
+
+talosVersion: v1.8.3
+kubernetesVersion: v1.31.2
+
+clusterName: &clusterName arc1
+
+endpoint: https://10.2.11.10:6443
+clusterPodNets: ["10.246.0.0/16"]
+clusterSvcNets: ["10.88.0.0/16"]
+
+additionalApiServerCertSans: &sans
+  - &kubeApiIP "10.2.11.10"
+  - 127.0.0.1 # KubePrism
+additionalMachineCertSans: *sans
+
+nodes:
+  - hostname: n1
+    controlPlane: true
+    ipAddress: 10.2.11.100
+    installDiskSelector: &nvmeDisk
+      size: < 150GB
+    networkInterfaces:
+      - interface: eth0
+        dhcp: true
+        vip:
+          ip: *kubeApiIP
+    # https://factory.talos.dev/?arch=amd64&cmdline=-console+console%3Dtty0&cmdline-set=true&extensions=-&extensions=siderolabs%2Fqemu-guest-agent&platform=nocloud&target=cloud&version=1.8.3
+    talosImageURL: &talosNoCloudControllerImage factory.talos.dev/installer/8d602ca480c9d97e22a572e13cfd9a6f41b2828ceac75707c5e59acdc147511b
+    schematic: &controllerSchematic
+      customization:
+        extraKernelArgs:
+          - -console
+          - console=tty0
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/qemu-guest-agent
+    nodeLabels:
+      node-role.kubernetes.io/control-plane: "control-plane"
+      topology.kubernetes.io/region: &region "us-central"
+      topology.kubernetes.io/zone: *clusterName
+  - hostname: n2
+    controlPlane: false
+    ipAddress: 10.2.11.101
+    installDiskSelector: *nvmeDisk
+    machineDisks:
+      - device: /dev/sdb
+        partitions:
+          - mountpoint: /var/mnt/nvme-pool
+    networkInterfaces:
+      - interface: eth0
+        dhcp: true
+    # https://factory.talos.dev/?arch=amd64&cmdline=-console+console%3DttyS0&cmdline-set=true&extensions=-&extensions=siderolabs%2Fnvidia-container-toolkit-production&extensions=siderolabs%2Fqemu-guest-agent&extensions=siderolabs%2Fnonfree-kmod-nvidia-production&platform=nocloud&target=cloud&version=1.8.3
+    talosImageURL: &talosNoCloudWorkerImage factory.talos.dev/installer/487dd055d9d68e9492675bff5aca6df0f2895270c6cc200d55d54f78b2f5d555
+    schematic: &workerSchematic
+      customization:
+        extraKernelArgs:
+          - -console
+          - console=tty0
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/nonfree-kmod-nvidia-production
+            - siderolabs/nvidia-container-toolkit-production
+            - siderolabs/qemu-guest-agent
+    patches:
+      - # Mount NVMe storage to kubelet
+        |-
+        machine:
+          kubelet:
+            extraMounts:
+              - destination: /var/mnt/nvme-pool
+                type: bind
+                source: /var/mnt/nvme-pool
+                options:
+                  - bind
+                  - rshared
+                  - rw
+    nodeLabels:
+      node-role.kubernetes.io/worker: "worker"
+      topology.kubernetes.io/region: *region
+      topology.kubernetes.io/zone: *clusterName
+
+patches:
+  - "@./patches/global/time.yaml"
+  - "@./patches/global/cluster-discovery.yaml"
+  - "@./patches/global/containerd.yaml"
+  - "@./patches/global/hostdns.yaml"
+  - "@./patches/global/kubelet.yaml"
+  - "@./patches/global/openebs.yaml"
+  - "@./patches/global/sysctls.yaml"
+
+controlPlane:
+  patches:
+    - "@./patches/control/cluster.yaml"
+    - "@./patches/control/api-access.yaml"
+    - "@./patches/control/disable-admission-controller.yaml"

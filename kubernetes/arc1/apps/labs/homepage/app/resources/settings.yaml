@@ -1,0 +1,29 @@
+---
+title: Dashboard
+theme: dark
+color: sky
+headerStyle: clean
+providers:
+  openweathermap: "{{OPENWEATHERMAP_API_KEY}}"
+layout:
+  Network:
+    tab: Main
+    style: row
+    columns: 4
+  Services:
+    tab: Main
+  Home:
+    tab: Main
+  Endpoints:
+    tab: Admin
+  IPMIs:
+    tab: Admin
+  Hypervisors:
+    tab: Admin
+  Backups:
+    tab: Admin
+quicklaunch:
+  searchDescriptions: true
+  hideInternetSearch: false
+  showSearchSuggestions: true
+  hideVisitURL: false
