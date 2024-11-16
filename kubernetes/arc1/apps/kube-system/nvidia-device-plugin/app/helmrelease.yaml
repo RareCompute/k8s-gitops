@@ -50,5 +50,5 @@ spec:
                   replicas: 7
       default: "default"
     runtimeClassName: nvidia
-    nodeSelector:
-      feature.node.kubernetes.io/pci-0300_10de.present: "true"
+    #    nodeSelector:
+    #      feature.node.kubernetes.io/pci-0300_10de.present: "true"
