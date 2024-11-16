@@ -98,6 +98,19 @@ tasks:
       - msg: Missing talhelper config file
         sh: test -f {{.TALHELPER_CONFIG_FILE}}
 
+  ls-gpus:
+    desc: List GPUs
+    dir: "/{{.BOOTSTRAP_TALOS_DIR}}"
+    cmds:
+      - talosctl get pcidevices | grep "Display controller"
+    requires:
+      vars: ["cluster"]
+    preconditions:
+      - msg: Missing talosconfig
+        sh: test -f {{.TALOSCONFIG_FILE}}
+      - msg: Unable to retrieve Talos config
+        sh: "talosctl config info >/dev/null 2>&1"
+
   install-helm-apps:
     desc: Bootstrap core apps needed for Talos
     dir: "/{{.BOOTSTRAP_TALOS_DIR}}"

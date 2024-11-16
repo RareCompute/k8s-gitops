@@ -22,8 +22,23 @@ spec:
     remediation:
       retries: 3
   values:
+    runtimeClassName: nvidia
+    gfd:
+      enabled: true
     config:
       map:
+        single: |-
+          version: v1
+          flags:
+            migStrategy: none
+            compatWithCPUManager: false
+          sharing:
+            timeSlicing:
+              renameByDefault: false
+              failRequestsGreaterThanOne: false
+              resources:
+                - name: nvidia.com/gpu
+                  replicas: 1
         default: |-
           version: v1
           flags:
@@ -48,7 +63,4 @@ spec:
               resources:
                 - name: nvidia.com/gpu
                   replicas: 7
-      default: "default"
-    runtimeClassName: nvidia
-    nodeSelector:
-      feature.node.kubernetes.io/pci-0300_10de.present: "true"
+      default: "single"

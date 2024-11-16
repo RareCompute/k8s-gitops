@@ -1,19 +1,28 @@
 # nvidia-device-plugin
 
-## Test deployment
+## Test feature
 
+```sh
+kubectl run nvidia-test --restart=Never -ti --rm --image nvcr.io/nvidia/cuda:12.1.0-base-ubuntu22.04 --overrides '{"spec": {"runtimeClassName": "nvidia"}}' nvidia-smi
 ```
+
+## Test resources
+
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
-  name: nvidia-test
-  namespace: kube-system
+  name: gpu-pod
 spec:
-  restartPolicy: OnFailure
+  restartPolicy: Never
   containers:
-    - name: cuda-vector-add
-      image: "nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda11.7.1-ubuntu20.04"
+    - name: cuda-container
+      image: nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0
       resources:
         limits:
-          nvidia.com/gpu: 1
+          nvidia.com/gpu: 1 # requesting 1 GPU
+  tolerations:
+    - key: nvidia.com/gpu
+      operator: Exists
+      effect: NoSchedule
 ```

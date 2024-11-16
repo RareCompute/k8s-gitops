@@ -11,8 +11,6 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/arc1/apps/kube-system/nvidia-device-plugin/app
   prune: true
-  dependsOn:
-    - name: node-feature-discovery
   sourceRef:
     kind: GitRepository
     name: k8s-gitops

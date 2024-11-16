@@ -28,7 +28,16 @@ spec:
     worker:
       config:
         core:
-          sources: ["pci", "system", "usb"]
+          sources:
+            - "pci"
+            - "system"
+            - "usb"
+        # TODO: Make sure this works
+        sources:
+          exclude:
+            - "speed"
+            - "operstate"
+            - "bonding_masters"
         # TODO: Add APC UPS
         #        sources:
         #          custom:
