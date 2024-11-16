@@ -1,7 +1,7 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 # Usage:  create WIP commit
-6         push to current branch
+#         push to current branch
 #         reconcile the cluster with flux
 #         remove previous WIP commit
 

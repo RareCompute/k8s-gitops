@@ -13,6 +13,7 @@ resources:
   - ./k8tz.yaml
   - ./metrics-server.yaml
   - ./node-feature-discovery.yaml
+  - ./nvidia-device-plugin.yaml
   - ./openebs.yaml
   - ./postfinance.yaml
   - ./prometheus-community.yaml

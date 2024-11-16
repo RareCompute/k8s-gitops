@@ -1,0 +1,97 @@
+---
+# yamllint disable
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# TODO: Finish this
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app colabfold
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      ollama:
+        type: deployment
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/sokrypton/colabfold
+              tag: 1.5.5-cuda11.8.0
+            env:
+              TZ: ${TIMEZONE}
+              MSA_MODE: "mmseqs2_uniref"
+              PAIR_MODE: "unpaired_paired"
+              PAIR_STRATEGY: "greedy"
+              USE_TEMPLATES: True
+              NUM_RECYCLE: 5
+              NUM_SEEDS: 3
+              RANDOM_SEED: 42
+              NUM_MODELS: 1
+              MODEL_TYPE: "auto"
+              USE_DROPOUT: False
+              MAX_SEQ: 6000
+              NUM_RELAX: 1
+              RELAX_MAX_ITERATIONS: 200
+              USE_GPU_RELAX: True
+              RANK: "multimer"
+            resources:
+              requests:
+                cpu: 200m
+                memory: 4Gi
+                gpu.intel.com/i915: "4"
+              limits:
+                cpu: 32000m
+                memory: 64Gi
+                gpu.intel.com/i915: "4"
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: &port 8878
+    ingress:
+      app:
+        className: traefik
+        annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Research
+          gethomepage.dev/name: Colabfold
+          gethomepage.dev/description:
+          gethomepage.dev/icon: *app
+        hosts:
+          - host: &host "colabfold.${SECRET_INTERNAL_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - secretName: colabfold-tls
+            hosts: [*host]
+    persistence:
+      data:
+        storageClass: local-nvme
+        accessMode: ReadWriteMany
+        size: 1024Gi
+        retain: true
+        globalMounts:
+          - path: /models

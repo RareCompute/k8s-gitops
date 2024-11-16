@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 # Usage:  Encrypt all secrets and push
 #         current changes to main branch,
