@@ -65,8 +65,11 @@ if [[ "$COMMAND" == "login" ]]; then
     echo ""
     echo "-------------------------------------------------------------------"
     echo ""
-    echo "Run the following command in your shell to finalize:"
+    echo "Run the following commands in your shell to finalize:"
+    echo ""
     echo "export KUBECONFIG=~/teleport-kubeconfig.yaml"
+    echo "tsh kube login arc1"
+    echo ""
 elif [[ "$COMMAND" == "logout" ]]; then
     echo "Logging out of teleport..."
     tsh logout
