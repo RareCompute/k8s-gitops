@@ -87,7 +87,6 @@ spec:
           - path: /app
       workspace:
         storageClass: local-nvme
-        # TODO: OpenEBS only support ReadWriteOnce
         accessMode: ReadWriteOnce
         size: 2048Gi
         retain: true
