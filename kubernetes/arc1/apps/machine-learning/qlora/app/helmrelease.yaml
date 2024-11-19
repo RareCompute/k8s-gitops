@@ -1,0 +1,99 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# TODO: Finish this
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app qlora
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      qlora:
+        type: deployment
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          runtimeClassName: nvidia
+          terminationGracePeriodSeconds: 1
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: nvidia.com/gpu.present
+                        operator: In
+                        values:
+                          - "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/rarecompute/qlora-docker
+              tag: main@sha256:e56350596e17af5198bfc848b0de3a5a11cb98d97e1e02dbb322467269342541
+            env:
+              TZ: ${TIMEZONE}
+              # GITHUB_REPO: https://github.com/RareCompute/example-models
+              NVIDIA_VISIBLE_DEVICES: all
+              NVIDIA_DRIVER_CAPABILITIES: all
+            securityContext:
+              capabilities.drop: ["ALL"]
+            resources:
+              requests:
+                cpu: 200m
+                memory: 8Gi
+              limits:
+                cpu: 16
+                memory: 32Gi
+                nvidia.com/gpu: 4
+            #            probes:
+            #              liveness:
+            #                enabled: true
+            #              readiness:
+            #                enabled: true
+            #              startup:
+            #                enabled: false
+            #                spec:
+            #                  failureThreshold: 30
+            #                  periodSeconds: 5
+    service:
+      app:
+        controller: *app
+        annotations:
+        ports:
+          http:
+            port: &port 80
+    persistence:
+      app:
+        storageClass: local-nvme
+        accessMode: ReadWriteOnce
+        size: 2Gi
+        globalMounts:
+          - path: /app
+      workspace:
+        storageClass: local-nvme
+        # TODO: OpenEBS only support ReadWriteOnce
+        accessMode: ReadWriteOnce
+        size: 2048Gi
+        retain: true
+        globalMounts:
+          - path: /workspace
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
