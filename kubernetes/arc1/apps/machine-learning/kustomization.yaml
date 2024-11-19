@@ -5,5 +5,5 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./qlora/ks.yaml
-  #- ./ollama/ks.yaml
+  - ./mmseqs2/ks.yaml
   #- ./jupyterhub/ks.yaml
