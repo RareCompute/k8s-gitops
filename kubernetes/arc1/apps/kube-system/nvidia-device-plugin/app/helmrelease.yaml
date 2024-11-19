@@ -63,4 +63,4 @@ spec:
               resources:
                 - name: nvidia.com/gpu
                   replicas: 7
-      default: "single"
+      default: "default"

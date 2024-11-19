@@ -1,0 +1,17 @@
+---
+kind: role
+version: v7
+metadata:
+  name: scientist
+  description: Access to machine learning resources
+spec:
+  allow:
+    kubernetes_labels:
+      "*": "*"
+    kubernetes_resources:
+      - kind: pod
+        name: "*"
+        namespace: "machine-learning"
+        verbs: ["*"]
+    kubernetes_groups:
+      - scientists
