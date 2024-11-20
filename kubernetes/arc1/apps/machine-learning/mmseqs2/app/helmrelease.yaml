@@ -45,7 +45,11 @@ spec:
           app:
             image:
               repository: ghcr.io/soedinglab/mmseqs2
-              tag: master@sha256:1d2d0eab503a56fcf4909e1d301156f91d0e67a2296725de9c192249fd0766b7
+              # Image A - GPU support
+              tag: master-cuda12@sha256:c1045173cd84e0921f3ffacad5beac0044432996643d589c0c407666aa7b4962
+
+              # Image B - No GPU support
+              #tag: master@sha256:1d2d0eab503a56fcf4909e1d301156f91d0e67a2296725de9c192249fd0766b7
             command: ["tail", "-f", "/dev/null"]
             env:
               TZ: ${TIMEZONE}
