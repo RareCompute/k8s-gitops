@@ -22,16 +22,22 @@ function show_help() {
     echo ""
 }
 
-# Parse arguments
+function handle_ctrl_c() {
+    echo ""
+    echo "Exiting gracefully..."
+    exit 1
+}
+trap handle_ctrl_c SIGINT
+
 COMMAND=$1
 POD_NAME=$2
 VERBOSE="false"
-shift 2
+shift
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
         -u|--user)
-            USER="$2"
+            TELEPORT_USER="$2"
             shift 2
             ;;
         -c|--cluster)
@@ -150,7 +156,7 @@ function destroy_pod() {
 }
 
 if [[ "$COMMAND" == "login" ]]; then
-    if [[ -z "$USER" ]]; then
+    if [[ -z "$TELEPORT_USER" ]]; then
         echo "Error: --user is required for login"
         show_help
         exit 1
@@ -164,7 +170,7 @@ if [[ "$COMMAND" == "login" ]]; then
     echo "                                                            "                                                           
     echo "Logging into teleport..."
     echo ""
-    tsh login --proxy="teleport.rarecompute.io:443" --auth=local --user="$USER" teleport.rarecompute.io
+    tsh login --proxy="teleport.rarecompute.io:443" --auth=local --user="$TELEPORT_USER" teleport.rarecompute.io
 
     echo "Setting KUBECONFIG..."
     export KUBECONFIG=~/teleport-kubeconfig.yaml
