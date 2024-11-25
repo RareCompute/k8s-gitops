@@ -46,6 +46,7 @@ spec:
             image:
               repository: ghcr.io/rarecompute/qlora
               tag: latest@sha256:0237b485048830073f36fb60dba97bd449c8e1632b939752552f220783d8d541
+            command: ["tail", "-f", "/dev/null"]
             env:
               TZ: ${TIMEZONE}
               # GITHUB_REPO: https://github.com/RareCompute/example-models
