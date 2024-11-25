@@ -26,7 +26,7 @@ spec:
       retries: 3
   values:
     controllers:
-      ollama:
+      colabfold:
         type: deployment
         annotations:
           reloader.stakater.com/auto: "true"
@@ -56,11 +56,11 @@ spec:
               requests:
                 cpu: 200m
                 memory: 4Gi
-                gpu.intel.com/i915: "4"
+                nvidia.com/gpu: 2
               limits:
                 cpu: 32000m
                 memory: 64Gi
-                gpu.intel.com/i915: "4"
+                nvidia.com/gpu: 4
     service:
       app:
         controller: *app
@@ -88,6 +88,7 @@ spec:
           - secretName: colabfold-tls
             hosts: [*host]
     persistence:
+      # TODO: Replace with existing PVC
       data:
         storageClass: local-nvme
         accessMode: ReadWriteMany

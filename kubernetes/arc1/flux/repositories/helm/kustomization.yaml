@@ -24,3 +24,4 @@ resources:
   - ./stakater.yaml
   - ./traefik.yaml
   - ./teleport.yaml
+  - ./actions-runner-controller.yaml
