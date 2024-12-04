@@ -45,10 +45,9 @@ spec:
           app:
             image:
               repository: ghcr.io/rarecompute/boltz
-              tag: latest@sha256:9f3ecd0a56a8d52dc50e63759f0a7dc75c8c8bf51f8a83d5e9f263ce91046b40
+              tag: rolling
             command: ["tail", "-f", "/dev/null"]
             env:
-              TZ: ${TIMEZONE}
               NVIDIA_VISIBLE_DEVICES: all
               NVIDIA_DRIVER_CAPABILITIES: all
             securityContext:
@@ -56,10 +55,10 @@ spec:
             resources:
               requests:
                 cpu: 200m
-                memory: 8Gi
+                memory: 1Gi
               limits:
-                cpu: 16
-                memory: 48Gi
+                cpu: 1000m
+                memory: 1Gi
                 nvidia.com/gpu: 4
     service:
       app:
@@ -69,6 +68,12 @@ spec:
           http:
             port: &port 80
     persistence:
+      sharedmem:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 48Gi
+        globalMounts:
+          - path: /dev/shm
       workspace:
         existingClaim: qlora-workspace
         globalMounts:
