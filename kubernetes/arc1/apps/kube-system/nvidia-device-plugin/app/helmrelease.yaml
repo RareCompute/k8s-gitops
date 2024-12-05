@@ -62,5 +62,5 @@ spec:
               failRequestsGreaterThanOne: false
               resources:
                 - name: nvidia.com/gpu
-                  replicas: 7
-      default: "default"
+                  replicas: 12
+      default: "enterprise"

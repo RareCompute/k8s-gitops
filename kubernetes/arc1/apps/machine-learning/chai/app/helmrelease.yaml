@@ -4,7 +4,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app boltz
+  name: &app chai
 spec:
   interval: 30m
   chart:
@@ -25,7 +25,7 @@ spec:
       retries: 3
   values:
     controllers:
-      boltz:
+      chai:
         type: deployment
         annotations:
           reloader.stakater.com/auto: "true"
@@ -44,18 +44,15 @@ spec:
         containers:
           app:
             image:
-              # https://github.com/RareCompute/containers/pkgs/container/boltz
-              repository: ghcr.io/rarecompute/boltz
-              tag: rolling@sha256:dace3bfd6d54fa7fa14517f883e9b348c0dfc4fb3831916c8feef400ae965d5b
-              # TODO: Images should only pull when a new checksum is detected. Or maybe we change from `rolling` to `latest` for releases?
-              pullPolicy: Always
+              # https://github.com/RareCompute/containers/pkgs/container/chai
+              repository: ghcr.io/rarecompute/chai
+              tag: rolling
             command: ["tail", "-f", "/dev/null"]
             env:
               NVIDIA_VISIBLE_DEVICES: all
               NVIDIA_DRIVER_CAPABILITIES: all
               USE_MSA_SERVER: True
-              CACHE_PATH: /workspace/boltz/cache
-              DATA_PATH: /workspace/boltz/data
+              CHAI_DOWNLOADS_DIR: "/workspace/chai/cache"
             securityContext:
               capabilities.drop: ["ALL"]
             resources:
@@ -77,7 +74,7 @@ spec:
       sharedmem:
         type: emptyDir
         medium: Memory
-        sizeLimit: 160Gi
+        sizeLimit: 64Gi
         globalMounts:
           - path: /dev/shm
       workspace:
