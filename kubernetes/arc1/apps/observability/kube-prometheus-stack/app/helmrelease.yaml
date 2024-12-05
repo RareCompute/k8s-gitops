@@ -110,6 +110,9 @@ spec:
               resources:
                 requests:
                   storage: 75Gi
+    # TODO: Add separate grafana helmrelease
+    # TODO: Add temperatures dashboard
+    # TODO: Add GPUs dashboard
     grafana:
       forceDeployDashboards: true
       persistence:

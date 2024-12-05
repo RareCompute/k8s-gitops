@@ -9,3 +9,4 @@ resources:
   - ./loki/ks.yaml
   - ./netshoot/ks.yaml
   - ./healthchecks/ks.yaml
+  - ./dcgm-exporter/ks.yaml

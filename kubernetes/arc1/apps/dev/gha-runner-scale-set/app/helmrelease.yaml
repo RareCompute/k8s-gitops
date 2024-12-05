@@ -21,6 +21,11 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: gha-runner-scale-set-controller
+      namespace: dev
   valuesFrom:
     - targetPath: githubConfigSecret.github_app_id
       kind: Secret
@@ -37,7 +42,7 @@ spec:
   values:
     nameOverride: gha-runner-scale-set
     runnerScaleSetName: gha-runner-scale-set
-    githubConfigUrl: https://github.com/RareCompute/containers
+    githubConfigUrl: https://github.com/RareCompute
     minRunners: 1
     maxRunners: 3
     containerMode:
@@ -48,16 +53,16 @@ spec:
           - name: runner
             image: ghcr.io/rarecompute/actions-runner:2.320.0@sha256:a357b0db3cb504da87cbbd46b304617fbf4a579e2d0f850ea4f177042f0a4786
             command: ["/home/runner/run.sh"]
-        volumes:
-          - name: nvme
-            ephemeral:
-              volumeClaimTemplate:
-                spec:
-                  accessModes: ["ReadWriteOnce"]
-                  storageClassName: "local-nvme"
-                  resources:
-                    requests:
-                      storage: 16Gi
+        #        volumes:
+        #          - name: nvme
+        #            ephemeral:
+        #              volumeClaimTemplate:
+        #                spec:
+        #                  accessModes: ["ReadWriteOnce"]
+        #                  storageClassName: "local-nvme"
+        #                  resources:
+        #                    requests:
+        #                      storage: 16Gi
     controllerServiceAccount:
       name: gha-runner-scale-set-controller
       namespace: dev

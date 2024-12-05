@@ -44,8 +44,11 @@ spec:
         containers:
           app:
             image:
+              # https://github.com/RareCompute/containers/pkgs/container/boltz
               repository: ghcr.io/rarecompute/boltz
-              tag: rolling
+              tag: rolling@sha256:8e831908dbeadbca053d8f6f4a625c931d5f2dc1ba867fbb1b85339a943f0796
+              # TODO: Images should only pull when a new checksum is detected. Or maybe we change from `rolling` to `latest` for releases?
+              #pullPolicy: Always
             command: ["tail", "-f", "/dev/null"]
             env:
               NVIDIA_VISIBLE_DEVICES: all
@@ -55,10 +58,10 @@ spec:
             resources:
               requests:
                 cpu: 200m
-                memory: 1Gi
+                memory: 4Gi
               limits:
-                cpu: 1000m
-                memory: 1Gi
+                cpu: 100
+                memory: 24Gi
                 nvidia.com/gpu: 4
     service:
       app:
@@ -71,13 +74,17 @@ spec:
       sharedmem:
         type: emptyDir
         medium: Memory
-        sizeLimit: 48Gi
+        sizeLimit: 160Gi
         globalMounts:
           - path: /dev/shm
       workspace:
         existingClaim: qlora-workspace
         globalMounts:
           - path: /workspace
+      cache:
+        type: emptyDir
+        globalMounts:
+          - path: /cache
       tmp:
         type: emptyDir
         globalMounts:
