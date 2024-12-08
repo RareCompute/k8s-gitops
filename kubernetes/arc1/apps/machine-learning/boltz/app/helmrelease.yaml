@@ -46,9 +46,7 @@ spec:
             image:
               # https://github.com/RareCompute/containers/pkgs/container/boltz
               repository: ghcr.io/rarecompute/boltz
-              tag: rolling@sha256:dace3bfd6d54fa7fa14517f883e9b348c0dfc4fb3831916c8feef400ae965d5b
-              # TODO: Images should only pull when a new checksum is detected. Or maybe we change from `rolling` to `latest` for releases?
-              pullPolicy: Always
+              tag: rolling@sha256:d9def851357d6325f51732a4978226c0af95c4effef6b7abf245e33101ebd1f4
             command: ["tail", "-f", "/dev/null"]
             env:
               NVIDIA_VISIBLE_DEVICES: all
