@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./secret.sops.yaml
+  - ./rbac.yaml
+  - ./helmrelease.yaml
+configMapGenerator:
+  - name: openssh-server-config
+    files:
+      - init.sh=./resources/init.sh
+      - custom.sh=./resources/custom.sh
+      - rare.sh=./resources/rare.sh
+      - kubeconfig.sh=./resources/kubeconfig.sh
+      - motd=./resources/motd.txt
+generatorOptions:
+  disableNameSuffixHash: true

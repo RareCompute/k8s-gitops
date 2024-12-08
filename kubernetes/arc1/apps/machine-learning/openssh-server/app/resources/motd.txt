@@ -1,0 +1,2 @@
+Welcome to Rare Compute. Type "rare" to start.
+Your persistent volume is mounted in: /workspace

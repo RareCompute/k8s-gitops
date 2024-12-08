@@ -15,20 +15,16 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-
   values:
+    serviceAccount:
+      name: ml-kubectl-access
     controllers:
       openssh-server:
         replicas: 1
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
-        pod:
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-            fsGroup: 1000
-            fsGroupChangePolicy: "OnRootMismatch"
+          configmap.reloader.stakater.com/reload: &secret openssh-server-secret
         containers:
           app:
             image:
@@ -39,26 +35,53 @@ spec:
               SUDO_ACCESS: false
             envFrom:
               - secretRef:
-                  name: openssh-server-secret
+                  name: *secret
             resources:
               requests:
-                cpu: 5m
+                cpu: 50m
                 memory: 512Mi
               limits:
-                memory: 1Gi
-            securityContext:
-              allowPrivilegeEscalation: false
-              capabilities:
-                drop:
-                  - ALL
+                memory: 4Gi
     service:
       app:
+        type: LoadBalancer
         controller: openssh-server
         ports:
           ssh:
-            port: 2222
+            port: 22
+            targetPort: 2222
+        annotations:
+          io.cilium/lb-ipam-ips: "${LB_OPENSSH}"
     persistence:
+      data:
+        storageClass: local-nvme
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        retain: true
+        globalMounts:
+          - path: /config
       config:
-        type: emptyDir
+        type: configMap
+        name: openssh-server-config
+        globalMounts:
+          - subPath: init.sh
+            path: /custom-cont-init.d/init.sh
+            readOnly: true
+          - subPath: custom.sh
+            path: /etc/profile.d/1-custom.sh
+            readOnly: true
+          - subPath: rare.sh
+            path: /etc/profile.d/2-rare.sh
+            readOnly: true
+          - subPath: kubeconfig.sh
+            path: /etc/profile.d/3-kubeconfig.sh
+            readOnly: true
+          - subPath: motd
+            path: /etc/motd
+            readOnly: true
+      workspace:
+        existingClaim: qlora-workspace
+        globalMounts:
+          - path: /workspace
       tmp:
         type: emptyDir
