@@ -46,7 +46,7 @@ spec:
             image:
               # https://github.com/RareCompute/containers/pkgs/container/chai
               repository: ghcr.io/rarecompute/chai
-              tag: rolling
+              tag: rolling@sha256:d7902787af9419a3dd434986a17691ba24bd03b3cbf85aec5ded6ea675e2f90b
             command: ["tail", "-f", "/dev/null"]
             env:
               NVIDIA_VISIBLE_DEVICES: all
