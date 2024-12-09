@@ -6,6 +6,10 @@ tmp
 Brewfile.lock.json
 *.log
 
+# Terraform
+.terraform.lock.hcl
+.tfplan
+
 # Kubernetes
 kubeconfig
 talosconfig

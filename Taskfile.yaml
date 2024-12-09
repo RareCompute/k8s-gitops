@@ -28,6 +28,9 @@ includes:
   talos:
     taskfile: .taskfiles/talos.yaml
     aliases: [t]
+  terraform:
+    taskfile: .taskfiles/terraform.yaml
+    aliases: [tf]
   precommit: .taskfiles/precommit.yaml
 
 tasks:

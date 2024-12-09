@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  # TODO: Add Terraform init function and Ansible playbooks
+  # WARNING: Untested
+  bootstrap:
+    desc: Terraform cluster
+    cmds:
+      - cd {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/terraform
+      - terraform init
+      - terraform plan
+      - terraform apply

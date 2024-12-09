@@ -1,6 +1,6 @@
 # 🧪 k8s-gitops
 
-This is the Rare Compute GitOps repository. It represents our efforts to streamline all Kubernetes deployments into one source of truth. Infrastructure is built on [Talos](https://www.talos.dev/) and deployed using [Talhelper](https://github.com/budimanjojo/talhelper), [helmfile](https://github.com/helmfile/helmfile) and [Flux](https://github.com/fluxcd/flux2). Dployment requires the necessary CLI tools. Taskfiles and scripts adapted from brettinternet's [homeops](https://github.com/brettinternet/homeops)
+This is the Rare Compute GitOps repository. It represents our efforts to streamline all Kubernetes deployments into one source of truth. Infrastructure is built on [Talos](https://www.talos.dev/) and deployed using [Talhelper](https://github.com/budimanjojo/talhelper), [helmfile](https://github.com/helmfile/helmfile) and [Flux](https://github.com/fluxcd/flux2). Dployment requires the necessary CLI tools. Most taskfiles and scripts adapted from brettinternet's [homeops](https://github.com/brettinternet/homeops)
 
 ## ✅ Requirements
 
