@@ -9,5 +9,6 @@ resources:
   - ./boltz/ks.yaml
   - ./chai/ks.yaml
   - ./openssh-server/ks.yaml
+  - ./dev-server/ks.yaml
   #- ./rfdiffusion/ks.yaml
   #- ./jupyterhub/ks.yaml
