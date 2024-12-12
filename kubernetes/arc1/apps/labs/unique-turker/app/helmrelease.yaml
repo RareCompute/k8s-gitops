@@ -33,7 +33,7 @@ spec:
               repository: ghcr.io/liana64/unique-turker
               tag: latest@sha256:6c3bd4d9ab8ed879d423b9c2e77c3096c06f50d6c590c79082d3af988a166240
             env:
-              EXPOSED_URL: unique-turker.${SECRET_EXTERNAL_DOMAIN}
+              EXPOSED_URL: unique-turker.${SECRET_ALTERNATE_DOMAIN}
             probes:
               liveness:
                 enabled: true

@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app openssh-server
+  name: &app dev-server
   namespace: flux-system
 spec:
   targetNamespace: machine-learning
@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: traefik
-  path: ./kubernetes/arc1/apps/machine-learning/openssh-server/app
+  path: ./kubernetes/arc1/apps/machine-learning/dev-server/app
   prune: true
   sourceRef:
     kind: GitRepository
