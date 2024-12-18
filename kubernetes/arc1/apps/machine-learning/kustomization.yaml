@@ -10,5 +10,6 @@ resources:
   - ./chai/ks.yaml
   - ./openssh-server/ks.yaml
   - ./dev-server/ks.yaml
+  #- ./ligandmpnn/ks.yaml
   #- ./rfdiffusion/ks.yaml
   #- ./jupyterhub/ks.yaml

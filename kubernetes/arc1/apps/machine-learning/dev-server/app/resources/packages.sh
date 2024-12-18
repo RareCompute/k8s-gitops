@@ -10,7 +10,6 @@ if [ ! -f /config/.local/bin/env ]; then
   uv venv --no-python-downloads /config/venv
 fi
 
-
 if [ "${INSTALL_SCIENCE_PACKAGES:-false}" = "true" ]; then
   if [ -d /config/venv ]; then
     . /config/venv/bin/activate
@@ -26,5 +25,6 @@ case ":$PATH:" in
     ;;
   *)
     export PATH="$PATH:/config/venv/bin"
+    export PATH="$PATH:/config/miniconda3/bin"
     ;;
 esac

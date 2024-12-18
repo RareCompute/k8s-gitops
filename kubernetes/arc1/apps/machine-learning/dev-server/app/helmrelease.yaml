@@ -27,7 +27,7 @@ spec:
           app:
             image:
               repository: ghcr.io/rarecompute/devserver
-              tag: rolling@sha256:239d9e8763ffbc8abfc20bee148133288e0ffc953014b0590256e9c6c582dff0
+              tag: rolling@sha256:4ab3a9dc48c5c0e327161bf109551c058fa708591052a9d4434c7263a409f1d7
             env:
               USER_NAME: amelie
               SUDO_ACCESS: false
@@ -40,10 +40,11 @@ spec:
                   name: *secret
             resources:
               requests:
-                cpu: 50m
-                memory: 512Mi
+                cpu: 250m
+                memory: 8192Mi
               limits:
-                memory: 4Gi
+                cpu: "80"
+                memory: 170Gi
         pod:
           runtimeClassName: nvidia
           terminationGracePeriodSeconds: 1
@@ -70,7 +71,7 @@ spec:
       data:
         storageClass: local-nvme
         accessMode: ReadWriteOnce
-        size: 100Gi
+        size: 65Gi
         retain: true
         globalMounts:
           - path: /config

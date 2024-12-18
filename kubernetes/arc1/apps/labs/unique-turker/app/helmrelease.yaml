@@ -31,8 +31,9 @@ spec:
           app:
             image:
               repository: ghcr.io/liana64/unique-turker
-              tag: latest@sha256:6c3bd4d9ab8ed879d423b9c2e77c3096c06f50d6c590c79082d3af988a166240
+              tag: latest@sha256:cffea2e56532728f9e1660db365420f83930420b47fba73b72d81ff3d415cd79
             env:
+              EXPOSED_PROTO: "HTTPS"
               EXPOSED_URL: unique-turker.${SECRET_ALTERNATE_DOMAIN}
             probes:
               liveness:
@@ -41,10 +42,11 @@ spec:
                 enabled: true
             resources:
               requests:
-                cpu: 15m
-                memory: 64Mi
+                cpu: 200m
+                memory: 128Mi
               limits:
-                memory: 256Mi
+                cpu: "1"
+                memory: 1024Mi
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
@@ -86,7 +88,7 @@ spec:
       data:
         storageClass: local-nvme
         accessMode: ReadWriteOnce
-        size: 256Mb
+        size: 300Mb
         retain: true
         globalMounts:
           - path: /config
