@@ -43,8 +43,8 @@ spec:
                 cpu: 250m
                 memory: 8192Mi
               limits:
-                cpu: "80"
-                memory: 170Gi
+                cpu: "64"
+                memory: 128Gi
         pod:
           runtimeClassName: nvidia
           terminationGracePeriodSeconds: 1
