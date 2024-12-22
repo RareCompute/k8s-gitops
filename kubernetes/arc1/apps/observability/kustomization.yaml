@@ -5,8 +5,9 @@ resources:
   - ./namespace.yaml
   - ./prometheus-operator-crds/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
+  - ./grafana/ks.yaml
   - ./promtail/ks.yaml
   - ./loki/ks.yaml
   - ./netshoot/ks.yaml
-  #- ./healthchecks/ks.yaml
   - ./dcgm-exporter/ks.yaml
+  #- ./healthchecks/ks.yaml

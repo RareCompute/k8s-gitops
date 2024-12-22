@@ -30,7 +30,7 @@ spec:
               tag: rolling@sha256:4ab3a9dc48c5c0e327161bf109551c058fa708591052a9d4434c7263a409f1d7
             env:
               USER_NAME: amelie
-              SUDO_ACCESS: false
+              SUDO_ACCESS: true
               UID: 1000
               GID: 2000
               NVIDIA_VISIBLE_DEVICES: all
@@ -43,8 +43,8 @@ spec:
                 cpu: 250m
                 memory: 8192Mi
               limits:
-                cpu: "80"
-                memory: 170Gi
+                cpu: "64"
+                memory: 128Gi
         pod:
           runtimeClassName: nvidia
           terminationGracePeriodSeconds: 1

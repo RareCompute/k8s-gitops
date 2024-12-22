@@ -21,7 +21,6 @@ access_control:
         [
           '{{ env "CLUSTER_CIDR" }}',
           '{{ env "NODE_CIDR" }}',
-          '{{ env "HOME_CIDR" }}',
           '{{ env "MGMT_CIDR" }}',
           '{{ env "VPN_CIDR" }}',
         ]

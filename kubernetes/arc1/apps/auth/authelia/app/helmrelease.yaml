@@ -149,7 +149,7 @@ spec:
       #              app.kubernetes.io/name: *app
     ingress:
       app:
-        className: traefik
+        className: traefik-external
         annotations:
           cert-manager.io/cluster-issuer: "letsencrypt-production"
           gethomepage.dev/enabled: "true"
