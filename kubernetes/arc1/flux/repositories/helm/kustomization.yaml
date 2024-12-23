@@ -26,3 +26,5 @@ resources:
   - ./traefik.yaml
   - ./teleport.yaml
   - ./actions-runner-controller.yaml
+  - ./descheduler.yaml
+  - ./deliveryhero.yaml
