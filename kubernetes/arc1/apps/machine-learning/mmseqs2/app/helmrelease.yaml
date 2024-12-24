@@ -45,7 +45,7 @@ spec:
           app:
             image:
               repository: ghcr.io/soedinglab/mmseqs2
-              tag: master-cuda12@sha256:c1045173cd84e0921f3ffacad5beac0044432996643d589c0c407666aa7b4962
+              tag: latest@sha256:2b5174608d916895ca7c60303bcd7a462580cfef9de4fea18d0d13639b1b0e50
             command: ["tail", "-f", "/dev/null"]
             env:
               TZ: ${TIMEZONE}

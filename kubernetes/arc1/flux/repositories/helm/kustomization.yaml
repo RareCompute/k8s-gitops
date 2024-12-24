@@ -28,3 +28,4 @@ resources:
   - ./actions-runner-controller.yaml
   - ./descheduler.yaml
   - ./deliveryhero.yaml
+  - ./airflow.yaml

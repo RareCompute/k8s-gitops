@@ -73,6 +73,11 @@ spec:
         className: traefik-external
         annotations:
           cert-manager.io/cluster-issuer: "letsencrypt-production"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Tools
+          gethomepage.dev/name: *app
+          gethomepage.dev/description: Manage HIT worker access
+          gethomepage.dev/icon: mdi-graph
         hosts:
           - host: &host "unique-turker.${SECRET_ALTERNATE_DOMAIN}"
             paths:
