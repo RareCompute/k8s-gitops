@@ -1,0 +1,170 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app airflow
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: *app
+      version: 8.9.0
+      sourceRef:
+        kind: HelmRepository
+        name: *app
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    useStandardNaming: true
+
+    securityContexts:
+      pod:
+        fsGroup: 1001
+        fsGroupChangePolicy: "OnRootMismatch"
+
+    ingress:
+      enabled: true
+      web:
+        annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Data orchestration
+          gethomepage.dev/group: Tools
+          gethomepage.dev/icon: apache-airflow
+          gethomepage.dev/name: Airflow
+          gethomepage.dev/url: &host "airflow.${SECRET_INTERNAL_DOMAIN}"
+        ingressClassName: traefik
+        host: *host
+        tls:
+          enabled: true
+          secretName: airflow-tls
+
+    executor: "CeleryExecutor"
+
+    extraEnv: |
+      - name: AIRFLOW__CORE__LOAD_EXAMPLES
+        value: 'False'
+      - name: AIRFLOW__CORE__HIDE_SENSITIVE_VAR_CONN_FIELDS
+        value: 'False'
+      - name: AIRFLOW__CORE__DEFAULT_TIMEZONE
+        value: America/Chicago
+      - name: AIRFLOW__WEBSERVER__BASE_URL
+        value: 'https://airflow.${SECRET_INTERNAL_DOMAIN}'
+      - name: AIRFLOW__WEBSERVER__DEFAULT_WRAP
+        value: 'True'
+      - name: AIRFLOW__WEBSERVER__EXPOSE_CONFIG
+        value: 'True'
+
+    extraEnvFrom: |
+      - secretRef:
+          name: airflow-secret
+
+    data:
+      metadataSecretName: &secret airflow-secret
+      brokerUrl: "redis://dragonfly.database.svc.cluster.local:6379"
+
+    fernetKeySecretName: *secret
+    webserverSecretKeySecretName: *secret
+
+    kerberos:
+      enabled: false
+
+    workers:
+      args:
+        - "bash"
+        - "-c"
+        - |-
+          exec \
+          airflow celery worker --without-mingle --without-gossip
+      securityContext:
+        fsGroup: 1001
+        fsGroupChangePolicy: "OnRootMismatch"
+      persistence:
+        enabled: false
+      extraInitContainers: []
+
+    externalDatabase:
+      type: postgres
+      host: postgres-1-rw.database.svc.cluster.local
+      port: 5432
+      database: airflow
+      userSecret: *secret
+      userSecretKey: "POSTGRES_USER"
+      passwordSecret: *secret
+      passwordSecretKey: "POSTGRES_PASSWORD"
+
+    externalRedis:
+      passwordSecret: *secret
+      passwordSecretKey: "REDIS_PASSWORD"
+      host: dragonfly.database.svc.cluster.local
+      port: 6379
+      databaseNumber: 1
+
+    scheduler:
+      enabled: true
+
+    createUserJob:
+      useHelmHooks: false
+      applyCustomEnv: false
+
+    migrateDatabaseJob:
+      useHelmHooks: false
+      applyCustomEnv: false
+
+    webserver:
+      enabled: true
+
+    triggerer:
+      enabled: true
+      persistence:
+        enabled: false
+
+    dagProcessor:
+      enabled: false
+
+    flower:
+      enabled: false
+
+    statsd:
+      enabled: true
+
+    pgbouncer:
+      enabled: true
+
+    redis:
+      enabled: false
+
+    elasticsearch:
+      enabled: false
+
+    cleanup:
+      enabled: false
+
+    postgresql:
+      enabled: false
+
+    config:
+      logging:
+        colored_console_log: "True"
+
+    dags:
+      gitSync:
+        enabled: true
+        repo: https://github.com/RareCompute/airflow-pipelines.git
+        branch: "main"
+        ref: "main"
+        subPath: "dags"
+
+    serviceMonitor:
+      enabled: true
+
+    prometheusRule:
+      enabled: true

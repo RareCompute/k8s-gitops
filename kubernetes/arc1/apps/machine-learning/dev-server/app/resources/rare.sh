@@ -73,6 +73,7 @@ restart_pod() {
 # Function to display help information
 show_help() {
     cat << EOF
+    
 VERSION:  0.0.2
 
 USAGE:    rare <command> [PATTERN]
@@ -91,6 +92,7 @@ USAGE:    rare <command> [PATTERN]
               rare ls
               rare shell boltz
               rare restart boltz
+
 EOF
 }
 

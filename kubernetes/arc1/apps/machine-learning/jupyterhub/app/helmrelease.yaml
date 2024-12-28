@@ -28,6 +28,7 @@ spec:
       enabled: true
       ingressClassName: traefik
       annotations:
+        cert-manager.io/cluster-issuer: "letsencrypt-production"
         gethomepage.dev/enabled: "true"
         gethomepage.dev/group: Research
         gethomepage.dev/icon: jupyter

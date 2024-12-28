@@ -10,21 +10,16 @@ if [ ! -f /config/.local/bin/env ]; then
   uv venv --no-python-downloads /config/venv
 fi
 
-if [ "${INSTALL_SCIENCE_PACKAGES:-false}" = "true" ]; then
-  if [ -d /config/venv ]; then
-    . /config/venv/bin/activate
-    uv pip install \
-      tensorflow torch torchvision torchaudio transformers \
-      numpy pandas matplotlib scikit-learn \
-      networkx tqdm pydot
-  fi
-fi
+#if [ "${INSTALL_SCIENCE_PACKAGES:-false}" = "true" ]; then
+#  if [ -d /config/venv ]; then
+#    . /config/venv/bin/activate
+#    uv pip install \
+#      tensorflow torch torchvision torchaudio transformers \
+#      numpy pandas matplotlib scikit-learn \
+#      networkx tqdm pydot
+#  fi
+#fi
 
-case ":$PATH:" in
-  *":/config/venv/bin:"*)
-    ;;
-  *)
-    export PATH="$PATH:/config/venv/bin"
-    export PATH="$PATH:/config/miniconda3/bin"
-    ;;
-esac
+path_add "/config/venv/bin"
+path_add "/config/.local/bin"
+path_add "/config/miniconda3/bin"

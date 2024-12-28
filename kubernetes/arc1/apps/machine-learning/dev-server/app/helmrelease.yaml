@@ -95,11 +95,11 @@ spec:
           - subPath: init.sh
             path: /custom-cont-init.d/init.sh
             readOnly: true
-          - subPath: packages.sh
-            path: /etc/profile.d/1-packages.sh
-            readOnly: true
           - subPath: custom.sh
-            path: /etc/profile.d/2-custom.sh
+            path: /etc/profile.d/1-custom.sh
+            readOnly: true
+          - subPath: packages.sh
+            path: /etc/profile.d/2-packages.sh
             readOnly: true
           - subPath: help.sh
             path: /etc/profile.d/3-help.sh

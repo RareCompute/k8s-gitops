@@ -2,7 +2,7 @@
 
 CLUSTER="arc1"
 NAMESPACE="machine-learning"
-NAME="ml-kubectl-access"
+NAME="ml-dev-server-kubectl-access"
 SERVICEACCOUNT="/var/run/secrets/kubernetes.io/serviceaccount"
 TOKEN="$(/bin/cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
 CACERT="$(/bin/cat $SERVICEACCOUNT/ca.crt | base64 -w 0)"
