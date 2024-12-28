@@ -28,3 +28,6 @@ resources:
   - ./actions-runner-controller.yaml
   - ./descheduler.yaml
   - ./deliveryhero.yaml
+  - ./airflow.yaml
+  - ./chaos-mesh.yaml
+  - ./vmware-tanzu.yaml

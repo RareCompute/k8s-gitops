@@ -22,9 +22,11 @@ spec:
       openssh-server:
         replicas: 1
         strategy: RollingUpdate
+
         annotations:
           reloader.stakater.com/auto: "true"
           configmap.reloader.stakater.com/reload: &secret openssh-server-secret
+
         containers:
           app:
             image:
@@ -42,6 +44,7 @@ spec:
                 memory: 512Mi
               limits:
                 memory: 4Gi
+
     service:
       app:
         type: LoadBalancer
@@ -60,6 +63,12 @@ spec:
         retain: true
         globalMounts:
           - path: /config
+
+      workspace:
+        existingClaim: qlora-workspace
+        globalMounts:
+          - path: /workspace
+
       config:
         type: configMap
         name: openssh-server-config
@@ -79,9 +88,6 @@ spec:
           - subPath: motd
             path: /etc/motd
             readOnly: true
-      workspace:
-        existingClaim: qlora-workspace
-        globalMounts:
-          - path: /workspace
+
       tmp:
         type: emptyDir

@@ -1,6 +1,8 @@
 help() {
     cat << EOF
 
+CLI          Type "rare" to use the Rare Compute CLI
+
 NOTE         This machine has 65GB of persistent storage. A 2TB persistent volume is
              mounted in: /workspace. All storage is on mirrored NVMes for 2x read.
 

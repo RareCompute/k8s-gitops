@@ -3,6 +3,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  - ./rbac.yaml
   - ./secret.sops.yaml
   - ./helmrelease.yaml
 configMapGenerator:
@@ -10,6 +11,9 @@ configMapGenerator:
     files:
       - init.sh=./resources/init.sh
       - help.sh=./resources/help.sh
+      - rare.sh=./resources/rare.sh
+      - custom.sh=./resources/custom.sh
+      - kubeconfig.sh=./resources/kubeconfig.sh
       - packages.sh=./resources/packages.sh
       - motd=./resources/motd.txt
 generatorOptions:

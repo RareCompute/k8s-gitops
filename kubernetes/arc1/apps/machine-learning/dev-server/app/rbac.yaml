@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ml-dev-server-kubectl-access
+  namespace: machine-learning
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: ml-dev-server-kubectl-access-role
+  namespace: machine-learning
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch", "delete"]
+  - apiGroups: [""]
+    resources: ["pods/exec"]
+    verbs: ["create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: ml-dev-server-kubectl-access-rolebinding
+  namespace: machine-learning
+subjects:
+  - kind: ServiceAccount
+    name: ml-dev-server-kubectl-access
+    namespace: machine-learning
+roleRef:
+  kind: Role
+  name: ml-dev-server-kubectl-access-role
+  apiGroup: rbac.authorization.k8s.io

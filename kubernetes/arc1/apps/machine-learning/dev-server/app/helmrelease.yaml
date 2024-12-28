@@ -16,13 +16,18 @@ spec:
         name: bjw-s
         namespace: flux-system
   values:
+    serviceAccount:
+      name: ml-kubectl-access
+
     controllers:
       dev-server:
         replicas: 1
-        type: deployment
+        strategy: RollingUpdate
+
         annotations:
           reloader.stakater.com/auto: "true"
           configmap.reloader.stakater.com/reload: &secret dev-server-secret
+
         containers:
           app:
             image:
@@ -45,6 +50,7 @@ spec:
               limits:
                 cpu: "64"
                 memory: 128Gi
+
         pod:
           runtimeClassName: nvidia
           terminationGracePeriodSeconds: 1
@@ -67,6 +73,7 @@ spec:
             targetPort: 2222
         annotations:
           io.cilium/lb-ipam-ips: "${LB_DEVSSH}"
+
     persistence:
       data:
         storageClass: local-nvme
@@ -75,6 +82,12 @@ spec:
         retain: true
         globalMounts:
           - path: /config
+
+      workspace:
+        existingClaim: qlora-workspace
+        globalMounts:
+          - path: /workspace
+
       config:
         type: configMap
         name: dev-server-config
@@ -82,18 +95,24 @@ spec:
           - subPath: init.sh
             path: /custom-cont-init.d/init.sh
             readOnly: true
-          - subPath: help.sh
-            path: /etc/profile.d/help.sh
-            readOnly: true
           - subPath: packages.sh
-            path: /etc/profile.d/packages.sh
+            path: /etc/profile.d/1-packages.sh
+            readOnly: true
+          - subPath: custom.sh
+            path: /etc/profile.d/2-custom.sh
+            readOnly: true
+          - subPath: help.sh
+            path: /etc/profile.d/3-help.sh
+            readOnly: true
+          - subPath: rare.sh
+            path: /etc/profile.d/4-rare.sh
+            readOnly: true
+          - subPath: kubeconfig.sh
+            path: /etc/profile.d/5-kubeconfig.sh
             readOnly: true
           - subPath: motd
             path: /etc/motd
             readOnly: true
-      workspace:
-        existingClaim: qlora-workspace
-        globalMounts:
-          - path: /workspace
+
       tmp:
         type: emptyDir

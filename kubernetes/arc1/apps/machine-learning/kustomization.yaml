@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   #- ./qlora/ks.yaml
-  #- ./mmseqs2/ks.yaml
+  - ./mmseqs2/ks.yaml
   - ./boltz/ks.yaml
   - ./chai/ks.yaml
   - ./openssh-server/ks.yaml

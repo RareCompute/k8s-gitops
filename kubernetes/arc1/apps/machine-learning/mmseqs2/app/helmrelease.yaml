@@ -45,10 +45,9 @@ spec:
           app:
             image:
               repository: ghcr.io/soedinglab/mmseqs2
-              tag: master-cuda12@sha256:c1045173cd84e0921f3ffacad5beac0044432996643d589c0c407666aa7b4962
+              tag: latest@sha256:2b5174608d916895ca7c60303bcd7a462580cfef9de4fea18d0d13639b1b0e50
             command: ["tail", "-f", "/dev/null"]
             env:
-              TZ: ${TIMEZONE}
               NVIDIA_VISIBLE_DEVICES: all
               NVIDIA_DRIVER_CAPABILITIES: all
             securityContext:
@@ -58,8 +57,8 @@ spec:
                 cpu: 200m
                 memory: 4Gi
               limits:
-                cpu: 16
-                memory: 32Gi
+                cpu: "32"
+                memory: 96Gi
                 nvidia.com/gpu: 4
     service:
       app:
@@ -69,6 +68,12 @@ spec:
           http:
             port: &port 80
     persistence:
+      #      sharedmem:
+      #        type: emptyDir
+      #        medium: Memory
+      #        sizeLimit: 128Gi
+      #        globalMounts:
+      #          - path: /dev/shm
       workspace:
         existingClaim: qlora-workspace
         globalMounts:
