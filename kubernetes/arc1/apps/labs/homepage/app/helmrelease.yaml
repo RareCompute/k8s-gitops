@@ -88,6 +88,8 @@ spec:
             readOnly: true
           - subPath: widgets.yaml
             path: /app/config/widgets.yaml
+          - subPath: chaos-mesh.svg
+            path: /app/public/icons/chaos-mesh.svg
             readOnly: true
       #      images:
       #        enabled: true

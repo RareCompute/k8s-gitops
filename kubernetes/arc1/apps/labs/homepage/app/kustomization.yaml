@@ -14,5 +14,6 @@ configMapGenerator:
       - services.yaml=./resources/services.yaml
       - settings.yaml=./resources/settings.yaml
       - widgets.yaml=./resources/widgets.yaml
+      - chaos-mesh.svg=./icons/chaos-mesh.svg
 generatorOptions:
   disableNameSuffixHash: true

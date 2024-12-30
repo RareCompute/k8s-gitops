@@ -8,9 +8,9 @@ resources:
   - ./mmseqs2/ks.yaml
   - ./boltz/ks.yaml
   - ./chai/ks.yaml
-  - ./openssh-server/ks.yaml
+  #- ./openssh-server/ks.yaml
   - ./dev-server/ks.yaml
   #- ./protenix/ks.yaml
-  #- ./ligandmpnn/ks.yaml
-  #- ./rfdiffusion/ks.yaml
+  - ./ligandmpnn/ks.yaml
+  - ./rfdiffusion/ks.yaml
   #- ./jupyterhub/ks.yaml

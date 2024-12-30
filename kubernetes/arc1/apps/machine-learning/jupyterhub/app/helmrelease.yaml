@@ -15,7 +15,7 @@ spec:
         namespace: flux-system
   values:
     hub:
-      existingSecret: jupyter-secrets
+      existingSecret: jupyter-secret
       db:
         type: postgres
     singleuser:
@@ -33,7 +33,7 @@ spec:
         gethomepage.dev/group: Research
         gethomepage.dev/icon: jupyter
         gethomepage.dev/name: JupyterHub
-        gethomepage.dev/description: JupyterLab orchestration
+        gethomepage.dev/description: JupyterLab orchestration tool
       hosts:
         - &host "jupyterhub.${SECRET_INTERNAL_DOMAIN}"
       tls:

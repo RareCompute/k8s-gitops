@@ -1,7 +1,7 @@
 ---
 title: Dashboard
 theme: dark
-color: sky
+color: violet
 headerStyle: clean
 providers:
   openweathermap: "{{OPENWEATHERMAP_API_KEY}}"
@@ -12,16 +12,8 @@ layout:
     columns: 4
   Services:
     tab: Main
-  Home:
+  Tools:
     tab: Main
-  Endpoints:
-    tab: Admin
-  IPMIs:
-    tab: Admin
-  Hypervisors:
-    tab: Admin
-  Backups:
-    tab: Admin
 quicklaunch:
   searchDescriptions: true
   hideInternetSearch: false

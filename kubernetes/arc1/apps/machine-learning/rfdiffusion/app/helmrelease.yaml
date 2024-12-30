@@ -44,24 +44,24 @@ spec:
         containers:
           app:
             image:
-              # https://github.com/RareCompute/containers/pkgs/container/rfdiffusion
               repository: ghcr.io/rarecompute/rfdiffusion
-              tag: rolling@sha256:9c6359a3a1e3c65728605baca79692d4ef1ab92df018cb8dd9e8b87534c50ba7
+
+              # renovate: datasource=docker depName=ghcr.io/rarecompute/rfdiffusion
+              tag: rolling@sha256:ea4a27b0e1c87814d9bca3b00b0bc65905981f2d8b01efd8967381add63a54f4
             command: ["tail", "-f", "/dev/null"]
             env:
               NVIDIA_VISIBLE_DEVICES: all
               NVIDIA_DRIVER_CAPABILITIES: all
-              USE_MSA_SERVER: True
-              rfdiffusion_DOWNLOADS_DIR: "/workspace/rfdiffusion/cache"
+              DOWNLOAD_ALL: true
             securityContext:
               capabilities.drop: ["ALL"]
             resources:
               requests:
                 cpu: 200m
-                memory: 4Gi
+                memory: 1Gi
               limits:
-                cpu: 100
-                memory: 24Gi
+                cpu: 16
+                memory: 32Gi
                 nvidia.com/gpu: 4
     service:
       app:
@@ -71,12 +71,6 @@ spec:
           http:
             port: &port 80
     persistence:
-      sharedmem:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 64Gi
-        globalMounts:
-          - path: /dev/shm
       workspace:
         existingClaim: qlora-workspace
         globalMounts:

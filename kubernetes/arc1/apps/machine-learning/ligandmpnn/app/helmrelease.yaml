@@ -27,8 +27,10 @@ spec:
     controllers:
       ligandmpnn:
         type: deployment
+
         annotations:
           reloader.stakater.com/auto: "true"
+
         pod:
           runtimeClassName: nvidia
           terminationGracePeriodSeconds: 1
@@ -41,6 +43,7 @@ spec:
                         operator: In
                         values:
                           - "true"
+
         containers:
           app:
             image:
@@ -62,9 +65,10 @@ spec:
                 cpu: 200m
                 memory: 1Gi
               limits:
-                cpu: 100
+                cpu: "16"
                 memory: 8Gi
                 nvidia.com/gpu: 4
+
     service:
       app:
         controller: *app
@@ -72,14 +76,12 @@ spec:
         ports:
           http:
             port: &port 80
+
     persistence:
-      sharedmem:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 64Gi
-        globalMounts:
-          - path: /dev/shm
       workspace:
         existingClaim: qlora-workspace
         globalMounts:
           - path: /workspace
+
+      tmp:
+        type: emptyDir
