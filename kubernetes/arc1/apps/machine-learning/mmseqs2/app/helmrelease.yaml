@@ -45,7 +45,8 @@ spec:
           app:
             image:
               repository: ghcr.io/soedinglab/mmseqs2
-              tag: latest@sha256:2b5174608d916895ca7c60303bcd7a462580cfef9de4fea18d0d13639b1b0e50
+              #tag: latest@sha256:2b5174608d916895ca7c60303bcd7a462580cfef9de4fea18d0d13639b1b0e50
+              tag: latest-cuda12@sha256:676613763ba142d9a340a5ad8da26fb1db43b98e603046364c2a00d981111d82
             command: ["tail", "-f", "/dev/null"]
             env:
               NVIDIA_VISIBLE_DEVICES: all
@@ -68,12 +69,13 @@ spec:
           http:
             port: &port 80
     persistence:
-      #      sharedmem:
-      #        type: emptyDir
-      #        medium: Memory
-      #        sizeLimit: 128Gi
-      #        globalMounts:
-      #          - path: /dev/shm
+      config:
+        type: configMap
+        name: dev-server-config
+        globalMounts:
+          - subPath: custom.sh
+            path: /etc/profile.d/1-custom.sh
+            readOnly: true
       workspace:
         existingClaim: qlora-workspace
         globalMounts:
